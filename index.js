@@ -1,8 +1,10 @@
 import express from "express";
 import sources from "./sources.js";
 import news from "./news.js";
+import cors from "cors";
 
 const app = express();
+app.use(cors());
 
 //init request
 app.get("/", (req, res) => {
