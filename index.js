@@ -1,5 +1,6 @@
 import express from "express";
 import sources from "./sources.js";
+import news from "./news.js";
 
 const app = express();
 
@@ -11,6 +12,28 @@ app.get("/", (req, res) => {
 //return products
 app.get("/api/sources", (req, res) => {
   res.send(sources);
+});
+
+//return product based on id
+app.get("/api/everything", (req, res) => {
+  let articles = [];
+
+  //check if the param is properly populated
+  if (req.query.sources) {
+    let sourcesParam = req.query.sources;
+    let sources = sourcesParam.split(",");
+
+    sources.forEach((source) => {
+      let articlesBySource = news.articles.filter((article) => {
+        return article.source.id == source;
+      });
+
+      articles.push(...articlesBySource);
+    });
+  }
+
+  console.log(sources);
+  res.send({ articles });
 });
 
 const port = process.env.port || 5003;
